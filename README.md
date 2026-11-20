@@ -16,7 +16,7 @@ Open `index.html` in a browser. The current demo is a single-file static site, w
 - Retro pixel-art runner and athletics track with dot-matrix scoreboard
 - Eight-split result card; click an individual split to explore accepted answers by score tier
 - Download/shareable spoiler-free result image
-- Daily attempt recorded in the browser, with practice mode
+- One daily attempt recorded per device; a single downward-arrow button starts today's heat
 
 ## Important limitations of this prototype
 
