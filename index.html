@@ -10488,7 +10488,7 @@ function getShareText(){const data=readSaved()||{total,answers};const squares=(d
 async function share(){const message=getShareText();try{if(navigator.clipboard){await navigator.clipboard.writeText(message);byId('shareStatus').textContent='Spoiler-free score copied to clipboard.';return;}}catch(e){}window.prompt('Copy your result:',message);}
 byId('saveScoreImage').addEventListener('click',saveImage);
 byId('shareScoreImage').addEventListener('click',shareImage);
-byId('startDaily').addEventListener('click',()=>{const saved=readSaved();if(saved)descendTo('results'),showResults(saved);else startRun();});byId('answerForm').addEventListener('submit',submit);byId('answerInput').addEventListener('input',event=>{if(locked)return;byId('validationMessage').textContent='';renderSuggestions(event.target.value);});byId('nextButton').addEventListener('click',nextQuestion);byId('shareResult').addEventListener('click',share);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!locked&&questions.length)updateClock();});buildStages();showWelcome();
+byId('startDaily').addEventListener('click',()=>{const saved=readSaved();if(saved)showResults(saved);else startRun();});byId('answerForm').addEventListener('submit',submit);byId('answerInput').addEventListener('input',event=>{if(locked)return;byId('validationMessage').textContent='';renderSuggestions(event.target.value);});byId('nextButton').addEventListener('click',nextQuestion);byId('shareResult').addEventListener('click',share);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!locked&&questions.length)updateClock();});buildStages();showWelcome();
 </script>
 </body>
 </html>
