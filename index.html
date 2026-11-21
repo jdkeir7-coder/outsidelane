@@ -613,12 +613,41 @@
 @keyframes scoreVeilIntro{0%,49%{opacity:1;visibility:visible}78%{opacity:.55;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden}}
 @keyframes scoreVeilPulse{from{opacity:.18;transform:rotateX(60deg)}to{opacity:1;transform:rotateX(0)}}
 @media(prefers-reduced-motion:reduce){.share-poster.result-intro .result-reveal-veil{animation:none!important;visibility:hidden!important;opacity:0!important}.result-reveal-veil .veil-pulses i{animation:none!important}}
+
+/* Shared athletics-track wordmark: a long stadium oval rather than a circle. */
+.home-stage .hero .home-tagline{
+  display:flex;align-items:center;justify-content:center;gap:.18em;
+  width:100%;margin:8px auto 11px;white-space:nowrap;
+  font-family:inherit;font-size:clamp(20px,4.15vw,47px);
+  font-weight:450;letter-spacing:-.035em;line-height:1.22;
+}
+.home-stage .hero .home-tagline .track-oval{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:none;border:1.5px solid currentColor;border-radius:999px;
+  padding:.13em .39em .17em;transform:rotate(-7deg);
+  line-height:1;white-space:nowrap;color:#fff;
+}
+.home-stage .hero .home-tagline .track-oval em{
+  display:block;font:italic 950 1.08em/1 inherit;
+  font-style:italic!important;font-weight:950!important;
+  color:#fff;letter-spacing:-.035em;transform:rotate(7deg);
+}
+.share-poster .poster-tagline .track-oval{
+  border-radius:999px!important;padding:.5cqw 1.65cqw!important;
+}
+@media(max-width:480px){
+  .home-stage .hero .home-tagline{
+    font-size:clamp(16px,5.1vw,25px);
+    letter-spacing:-.05em;gap:.13em;
+  }
+  .home-stage .hero .home-tagline .track-oval{padding:.13em .27em .15em}
+}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top"><button id="brandHome" class="brand brand-home" type="button" aria-label="OUTSIDELANE: return to the start" title="Back to the start"><span class="brand-badge">OL</span>OUTSIDELANE</button><div class="top-right">The athletics daily</div></header>
-  <section id="intro" class="hero"><div class="kicker"><span class="live-dot"></span> THE DAILY START LINE</div><h1>Think outside<br><em>the track.</em></h1><p class="sub">Think outside the track. Find the rarest answer. Eight athletics questions, 25 seconds each — and a race to the outside lane.</p></section>
+  <section id="intro" class="hero"><div class="kicker"><span class="live-dot"></span> THE DAILY START LINE</div><h1 class="home-tagline">THINK OUTSIDE THE <span class="track-oval"><em>TRACK</em></span></h1><p class="sub">Think outside the track. Find the rarest answer. Eight athletics questions, 25 seconds each — and a race to the outside lane.</p></section>
   <section id="raceCard" class="race-card" aria-label="100 metre sprint visual and cumulative score">
     <div class="race-top">
       <div class="race-label-group"><span id="raceLabel">DAILY RACE</span><span class="race-label-sub">800M · 8 QUESTIONS</span></div>
