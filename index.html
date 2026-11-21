@@ -10388,8 +10388,30 @@
 // OUTSIDELANE official-entry/results/toplist-sourced seed index; not a complete dataset.
 // Scores are illustrative tiers, never represented as measured player rarity.
 // Each question's two-letter topic group is used to select one of two daily questions.
-const officialSeed=JSON.parse(document.getElementById('officialSeed').textContent);
-const rawQuestions=officialSeed.questions.map(q=>({group:q.group,bucket:q.bucket,topic:q.topic,prompt:q.prompt,note:q.note,source:q.source, entries:q.entries.map(e=>[e.name,e.score,e.aliases.join('|')])}));
+let officialSeed=JSON.parse(document.getElementById('officialSeed').textContent);
+const mapPlayableQuestions=bank=>bank.questions.map(q=>({group:q.group,bucket:q.bucket,topic:q.topic,prompt:q.prompt,note:q.note,source:q.source,entries:q.entries.map(e=>[e.name,e.score,e.aliases.join('|')])}));
+let rawQuestions=mapPlayableQuestions(officialSeed);
+// The Python publisher in AthleticsKrillion writes this verified static bank.
+// Keep the embedded seed as a fallback for offline/file:// play and deployments
+// whose published JSON hasn't arrived yet.
+const questionBankReady=(async()=>{
+  try{
+    const response=await fetch('data/question-bank.json',{cache:'no-store'});
+    if(!response.ok)throw Error('Question bank unavailable');
+    const bank=await response.json();
+    if(!Array.isArray(bank.questions)||bank.questions.length<33||!bank.sources)throw Error('Incomplete question bank');
+    for(const q of bank.questions){
+      if(!q.prompt||!q.topic||!bank.sources[q.source]||!Array.isArray(q.entries)||!q.entries.length)throw Error('Invalid playable question');
+      if(q.entries.some(e=>!e.name||!Array.isArray(e.aliases)||typeof e.score!=='number'))throw Error('Invalid published answer');
+    }
+    officialSeed=bank;
+    rawQuestions=mapPlayableQuestions(bank);
+    document.querySelector('.app').dataset.questionSource='published';
+  }catch(error){
+    console.warn('Using embedded verified question bank:',error);
+    document.querySelector('.app').dataset.questionSource='embedded';
+  }
+})();
 const byId = id => document.getElementById(id);
 
 const panels = ['homePanel','gamePanel','resultsPanel'];
@@ -11004,7 +11026,7 @@ byId('brandHome').addEventListener('click',()=>{
 byId('posterScore').addEventListener('click',()=>renderMatrixScore(activeResult().total,true,25));
 byId('saveScoreImage').addEventListener('click',saveImage);
 byId('shareScoreImage').addEventListener('click',shareImage);
-byId('startDaily').addEventListener('click',()=>{const saved=readSaved();if(saved)showResults(saved);else startRun();});byId('answerForm').addEventListener('submit',submit);
+byId('startDaily').addEventListener('click',async()=>{const saved=readSaved();if(saved){showResults(saved);return;}const button=byId('startDaily');button.disabled=true;try{await questionBankReady;startRun();}finally{button.disabled=false;}});byId('answerForm').addEventListener('submit',submit);
 byId('answerInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing)returnKeyWantsNext=mobileGameDevice();});
 byId('submitAnswer').addEventListener('pointerdown',()=>{returnKeyWantsNext=false;});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.repeat&&locked&&document.querySelector('.app').dataset.stage==='game'&&document.activeElement===document.body){e.preventDefault();nextQuestion();}});byId('answerInput').addEventListener('input',event=>{if(locked)return;byId('validationMessage').textContent='';renderSuggestions(event.target.value);});byId('nextButton').addEventListener('click',nextQuestion);byId('shareResult').addEventListener('click',share);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!locked&&questions.length)updateClock();});buildStages();setupMobileKeyboard();showWelcome();
