@@ -84,7 +84,7 @@ def main() -> None:
     print(f"Published {count} verified question sets to {args.output}")
     candidates = generate_candidates()
     args.candidates_output.parent.mkdir(parents=True, exist_ok=True)
-    args.candidates_output.write_text(json.dumps({"status": "unvalidated", "playable": False, "candidates": candidates}, ensure_ascii=False, separators=(",", ":")) + "\\n", encoding="utf-8")
+    args.candidates_output.write_text(json.dumps({"status": "unvalidated", "playable": False, "candidates": candidates}, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     print(f"Staged {len(candidates)} unvalidated generated questions for review; not served to players")
 
 
