@@ -642,12 +642,66 @@
   }
   .home-stage .hero .home-tagline .track-oval{padding:.13em .27em .15em}
 }
+
+/* Unified OutsideLane wordmark across home and results (share poster). */
+.home-stage .hero .oval-tagline,
+.share-poster .poster-bottom .oval-tagline{
+  display:flex!important;flex-direction:row;align-items:center;justify-content:center;
+  flex-wrap:nowrap;white-space:nowrap!important;text-transform:uppercase;
+  font-family:inherit;font-style:normal;line-height:1.15;
+}
+.home-stage .hero .oval-tagline{
+  gap:.23em;margin:10px auto 12px;width:100%;
+  font-size:clamp(18px,3.35vw,47px)!important;letter-spacing:-.045em!important;
+}
+.home-stage .hero .oval-tagline .tagline-lead,
+.share-poster .poster-bottom .oval-tagline .tagline-lead{
+  display:inline-block;flex:0 0 auto;font-weight:350!important;
+  font-style:normal;white-space:nowrap;
+}
+.home-stage .hero .oval-tagline .track-oval,
+.share-poster .poster-bottom .oval-tagline .track-oval{
+  display:inline-flex!important;align-items:center;justify-content:center;
+  flex:0 0 auto;white-space:nowrap;border:1.5px solid currentColor!important;
+  border-radius:999px!important;transform:rotate(-6deg);
+  background:transparent;
+}
+.home-stage .hero .oval-tagline .track-oval{
+  padding:.12em .39em .15em!important;
+}
+.home-stage .hero .oval-tagline .track-oval em,
+.share-poster .poster-bottom .oval-tagline .track-oval em{
+  display:block;font-weight:950!important;font-style:italic!important;
+  color:#fff;transform:rotate(6deg);line-height:1.05;white-space:nowrap;
+}
+.home-stage .hero .oval-tagline .track-oval em{
+  font-size:1.07em!important;letter-spacing:-.045em;
+}
+.share-poster .poster-bottom .oval-tagline{
+  justify-content:flex-start;gap:.8cqw;
+  font-size:1.92cqw!important;font-weight:350!important;letter-spacing:.09cqw!important;
+}
+.share-poster .poster-bottom .oval-tagline .track-oval{
+  padding:.6cqw 1.7cqw!important;border-width:1px!important;
+}
+.share-poster .poster-bottom .oval-tagline .track-oval em{
+  font-size:2.45cqw!important;letter-spacing:.05cqw;
+}
+@media(max-width:700px){
+  .home-stage .hero .oval-tagline{
+    font-size:clamp(14px,4.55vw,29px)!important;gap:.13em;
+    letter-spacing:-.055em!important;
+  }
+  .home-stage .hero .oval-tagline .track-oval{
+    padding:.12em .24em .15em!important;
+  }
+}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top"><button id="brandHome" class="brand brand-home" type="button" aria-label="OUTSIDELANE: return to the start" title="Back to the start"><span class="brand-badge">OL</span>OUTSIDELANE</button><div class="top-right">The athletics daily</div></header>
-  <section id="intro" class="hero"><div class="kicker"><span class="live-dot"></span> THE DAILY START LINE</div><h1 class="home-tagline">THINK OUTSIDE THE <span class="track-oval"><em>TRACK</em></span></h1><p class="sub">Think outside the track. Find the rarest answer. Eight athletics questions, 25 seconds each — and a race to the outside lane.</p></section>
+  <section id="intro" class="hero"><div class="kicker"><span class="live-dot"></span> THE DAILY START LINE</div><h1 class="home-tagline oval-tagline"><span class="tagline-lead">THINK OUTSIDE THE</span><span class="track-oval"><em>TRACK</em></span></h1><p class="sub">Think outside the track. Find the rarest answer. Eight athletics questions, 25 seconds each — and a race to the outside lane.</p></section>
   <section id="raceCard" class="race-card" aria-label="100 metre sprint visual and cumulative score">
     <div class="race-top">
       <div class="race-label-group"><span id="raceLabel">DAILY RACE</span><span class="race-label-sub">800M · 8 QUESTIONS</span></div>
@@ -733,7 +787,7 @@
         <div class="poster-stats"><span><b id="posterCorrect">0/8</b> VALID ANSWERS</span><span><b id="posterRare">0</b> RARE SPLITS</span></div>
         <div class="poster-splits-heading"><span>YOUR EIGHT SPLITS</span><span>METRES</span></div>
         <div class="poster-splits" id="posterSplits"></div>
-        <div class="poster-bottom"><span class="poster-tagline">THINK OUTSIDE THE <span class="track-oval"><em>TRACK</em></span></span><span class="poster-challenge">CAN YOU BEAT ME? <span>↗</span></span></div>
+        <div class="poster-bottom"><span class="poster-tagline oval-tagline"><span class="tagline-lead">THINK OUTSIDE THE</span><span class="track-oval"><em>TRACK</em></span></span><span class="poster-challenge">CAN YOU BEAT ME? <span>↗</span></span></div>
       </div>
 
 
