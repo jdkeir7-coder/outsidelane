@@ -11026,7 +11026,11 @@ byId('brandHome').addEventListener('click',()=>{
 byId('posterScore').addEventListener('click',()=>renderMatrixScore(activeResult().total,true,25));
 byId('saveScoreImage').addEventListener('click',saveImage);
 byId('shareScoreImage').addEventListener('click',shareImage);
-byId('startDaily').addEventListener('click',async()=>{const saved=readSaved();if(saved){showResults(saved);return;}const button=byId('startDaily');button.disabled=true;try{await questionBankReady;startRun();}finally{button.disabled=false;}});byId('answerForm').addEventListener('submit',submit);
+// Enable the race only when the published bank has loaded (or fallback is ready).
+// Starting from a synchronous tap keeps mobile keyboard focus working.
+byId('startDaily').disabled=true;
+questionBankReady.finally(()=>{byId('startDaily').disabled=false;});
+byId('startDaily').addEventListener('click',()=>{const saved=readSaved();if(saved)showResults(saved);else startRun();});byId('answerForm').addEventListener('submit',submit);
 byId('answerInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing)returnKeyWantsNext=mobileGameDevice();});
 byId('submitAnswer').addEventListener('pointerdown',()=>{returnKeyWantsNext=false;});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.repeat&&locked&&document.querySelector('.app').dataset.stage==='game'&&document.activeElement===document.body){e.preventDefault();nextQuestion();}});byId('answerInput').addEventListener('input',event=>{if(locked)return;byId('validationMessage').textContent='';renderSuggestions(event.target.value);});byId('nextButton').addEventListener('click',nextQuestion);byId('shareResult').addEventListener('click',share);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!locked&&questions.length)updateClock();});buildStages();setupMobileKeyboard();showWelcome();
