@@ -1,0 +1,33 @@
+name: Publish OutsideLane questions
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'AthleticsKrillion/generator/**'
+      - 'AthleticsKrillion/tests/**'
+      - '.github/workflows/publish-questions.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test candidate generator
+        run: PYTHONPATH=AthleticsKrillion python -m unittest discover -s AthleticsKrillion/tests
+      - name: Publish verified answer bank
+        run: python -m AthleticsKrillion.generator.publish
+      - name: Commit updated bank
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/question-bank.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: publish verified OutsideLane question bank"
+            git push
+          fi
