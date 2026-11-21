@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 import re
 
+from .generator import generate_candidates
+
 ROOT = Path(__file__).resolve().parents[2]
 SEED_RE = re.compile(r'<script type="application/json" id="officialSeed">([\s\S]*?)</script>')
 
@@ -76,9 +78,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Publish verified OutsideLane questions as static JSON.")
     parser.add_argument("--source", type=Path, default=ROOT / "index.html", help="HTML seed or verified-answer JSON source")
     parser.add_argument("--output", type=Path, default=ROOT / "data" / "question-bank.json")
+    parser.add_argument("--candidates-output", type=Path, default=ROOT / "data" / "question-candidates.json", help="Unvalidated template candidates for editorial review")
     args = parser.parse_args()
     count = publish(args.source, args.output)
     print(f"Published {count} verified question sets to {args.output}")
+    candidates = generate_candidates()
+    args.candidates_output.parent.mkdir(parents=True, exist_ok=True)
+    args.candidates_output.write_text(json.dumps({"status": "unvalidated", "playable": False, "candidates": candidates}, ensure_ascii=False, separators=(",", ":")) + "\\n", encoding="utf-8")
+    print(f"Staged {len(candidates)} unvalidated generated questions for review; not served to players")
 
 
 if __name__ == "__main__":
