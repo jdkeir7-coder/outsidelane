@@ -6,7 +6,7 @@ OUTSIDELANE is an athletics rarity-trivia game. Players have **8 questions**, **
 
 ## Play / develop locally
 
-Open `index.html` in a browser. The current demo is a single-file static site, with the game, styles, scripts, and sample answer database embedded in the page. No build tool or environment variables are required.
+Open `index.html` in a browser. The site loads the published `data/question-bank.json` when hosted, falling back to its embedded verified seed offline. No browser secrets or database credentials are needed.
 
 ## Current features
 
@@ -17,6 +17,14 @@ Open `index.html` in a browser. The current demo is a single-file static site, w
 - Eight-split result card; click an individual split to explore accepted answers by score tier
 - Download/shareable spoiler-free result image
 - One daily attempt recorded per device; a single downward-arrow button starts today's heat
+
+## Question creation and publishing
+
+- `AthleticsKrillion/generator/templates.py` defines candidate question patterns. Run `PYTHONPATH=AthleticsKrillion python -m generator.main --dry-run` to preview candidate generation, or supply `DATABASE_URL` server-side to save candidates to Neon (existing database schema required).
+- `python -m AthleticsKrillion.generator.publish` checks the embedded verified answer sets and writes `data/question-bank.json` for the game. Pass `--source /path/to/verified-questions.json` to use a separately reviewed and fully answered question dataset instead.
+- The same publisher stages template-generated questions in `data/question-candidates.json` with `playable: false`. **Candidates do not enter the game until their correct-answer datasets and sources have been validated.** Current Neon candidate records only contain wording and parameters, not answer lists; there is not yet an automatic Neon-to-playable-question validator.
+- The GitHub Action `Publish OutsideLane questions` runs the tests and publisher on relevant commits or manual dispatch, committing updated JSON. The browser reads the published playable bank before starting the day's eight-question heat; if unavailable it uses the embedded version.
+- To add playable questions, provide a JSON object with `sources` and `questions`, each question containing `group`, `topic`, `prompt`, `source`, and nonempty `entries` containing `name`, `score` (0–100), and `aliases` (array). The existing daily selector currently requires the established 33-slot bank ordering; extending selection logic to new question families remains separate work.
 
 ## Important limitations of this prototype
 
